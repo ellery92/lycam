@@ -2,6 +2,7 @@
 #include "category.h"
 #include "command.h"
 #include "integer.h"
+#include "floatjgv.h"
 
 #include <common/logger.h>
 
@@ -26,6 +27,8 @@ std::shared_ptr<INode> NodeMap::getNode(std::string const &name)
         return std::make_shared<CommandNode>(name, _xmlParser, _port);
     } else if (type == "Integer") {
         return std::make_shared<IntegerNode>(name, _xmlParser, _port);
+    } else if (type == "Float") {
+        return std::make_shared<FloatNode>(name, _xmlParser, _port);
     }
     return NULL;
 }

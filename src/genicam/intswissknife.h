@@ -17,51 +17,35 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef FORMULA_H
-#define FORMULA_H
 
-#include <string>
-#include <map>
-#include <queue>
-#include "token.h"
+#ifndef INTSWISSKNIFE_H
+#define INTSWISSKNIFE_H
+#include "integer.h"
+#include "reg.h"
 
 namespace Jgv {
 
 namespace GenICam {
 
-using IntegerVariables = std::map<std::string, int64_t>;
-using FloatVariables = std::map<std::string, double>;
-
-class Formula final
+class IntSwissKnifeNode final : public RegNode, public Integer::Interface
 {
 public:
-    Formula(const std::string &formula);
-    ~Formula() = default;
+    IntSwissKnifeNode(std::string const &name, std::weak_ptr<GenICamXMLParser> xmlParser,
+                      std::weak_ptr<IPort::Interface> port)
+        : RegNode(name, xmlParser, port) {}
 
-    std::vector<std::string> variablesList() const;
+    virtual ~IntSwissKnifeNode() = default;
+    virtual uint64_t getValue() override;
+    virtual void setValue(uint64_t value) override;
+    virtual uint64_t getMin() override { return 0; }
+    virtual uint64_t getMax() override { return 0; }
+    virtual uint64_t getInc() override { return 0; };
 
-    int64_t evaluateAsInteger(const IntegerVariables &intVariables,
-                              const FloatVariables &floatVariables);
-    double evaluateAsFloat(const IntegerVariables &intVariables,
-                           const FloatVariables &floatVariables);
-
-    void debugOutput(const std::string &additionnalInfos) const;
-
-private:
-    const std::string _formula;
-    IntegerVariables _intVariables;
-    FloatVariables _floatVariables;
-    std::queue<Token::Object> output;
-
-    Token::Object getNextToken(int fromPosition) const;
-    Token::Object getVariable(int fromPosition) const;
-    std::string getNumber(int fromPosition) const;
-    bool predecendenceIsEqual(const Token::Object &left, const Token::Object &right) const;
-    bool predecendenceIsLess(const Token::Object &left, const Token::Object &right) const;
-}; // class Formula
+    virtual Interface *interface() { return this; }
+}; // class Object
 
 } // namespace GenICam
 
 } // namespace Jgv
 
-#endif // FORMULA_H
+#endif // INTSWISSKNIFE_H

@@ -14,7 +14,7 @@ Logger &logger()
         // AutoPtr<Formatter> pFormatter =
         //     new PatternFormatter("%m-%d-%Y %h:%M:%S [%p] %U:%u : %t");
         AutoPtr<Formatter> pFormatter =
-            new PatternFormatter("[%p] %m-%d-%Y %h:%M:%S: %t");
+            new PatternFormatter("[%p] %U:%u: %t");
 
 #ifdef _DEBUG
         AutoPtr<Channel> pChannel = new ConsoleChannel;

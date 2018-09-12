@@ -72,6 +72,7 @@ Info INFOS[] = {
     {   200,     Associativity::LEFT_TO_RIGHT,       1,        "TAN"   },  // TAN
     {   200,     Associativity::LEFT_TO_RIGHT,       1,        "ABS"   },  // ABS
     {   200,     Associativity::LEFT_TO_RIGHT,       1,        "EXP"   },  // EXP
+    {   200,     Associativity::LEFT_TO_RIGHT,       1,        "LG"    },  // LG
     {   200,     Associativity::LEFT_TO_RIGHT,       1,        "LN"    },  // LN
     {   200,     Associativity::LEFT_TO_RIGHT,       1,        "SQRT"  },  // SQRT
     {   200,     Associativity::LEFT_TO_RIGHT,       1,        "TRUNC" },  // TRUNC
@@ -97,7 +98,7 @@ void Object::setType(Token::Type type, const std::string &token) noexcept
     if (!token.empty()) {
         m_genicamToken = token;
         if (m_type == Type::INT64) {
-            m_value.intValue = std::stoll(m_genicamToken);
+            m_value.intValue = std::stoll(m_genicamToken, NULL, 0);
         }
         else if (type == Type::DOUBLE) {
             m_value.floatValue = std::stod(m_genicamToken);

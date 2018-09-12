@@ -95,12 +95,12 @@ int main()
         std::cout << "Width: " << intPtr->getValue() << std::endl;
         std::cout << "Min: " << intPtr->getMin() << std::endl;
         std::cout << "Max: " << intPtr->getMax() << std::endl;
-        std::cout << "Inc: " << intPtr->getInc() << std::endl;
+        // std::cout << "Inc: " << intPtr->getInc() << std::endl;
 
-        intPtr->setValue(1260);
-        int width = intPtr->getValue();
-        poco_assert(width == 1260);
-        intPtr->setValue(1280);
+        // intPtr->setValue(1260);
+        // int width = intPtr->getValue();
+        // poco_assert(width == 1260);
+        // intPtr->setValue(1280);
 
         node = nodeMap->getNode("Gain");
         poco_assert(node != NULL);
@@ -109,7 +109,6 @@ int main()
         Jgv::GenICam::Float::Interface *fltPtr =
             dynamic_cast<Jgv::GenICam::Float::Interface*>(iface);
         std::cout << "Gain: " << fltPtr->getValue() << std::endl;
-
         gvcpClient->releaseDevice();
     }
 

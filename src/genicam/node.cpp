@@ -6,40 +6,22 @@ using namespace Jgv::GenICam;
 Node::Node(std::string const &name,
            std::weak_ptr<GenICamXMLParser> xmlParser,
            std::weak_ptr<IPort::Interface> port)
-    : _name(name),
-      _xmlParser(xmlParser),
-      _port(port){}
-
-Poco::XML::Element *Node::element()
 {
-    return element(_name);
-}
-
-Poco::XML::Element *Node::element(std::string const &name)
-{
+    _xmlParser = xmlParser;
     auto p = _xmlParser.lock();
-    if (!p)
-        return NULL;
-
-    Poco::XML::Element *elem = p->getNodeByNameAttribute(name);
-    if (!elem)
-        return NULL;
-
-    return elem;
+    poco_assert(p);
+    _node = p->getNodeByNameAttribute(name);
+    _port = port;
 }
 
 std::string Node::typeString()
 {
-    Poco::XML::Element *elem = element();
-    if (!elem)
-        return std::string();
-
-    return elem->tagName();
+    return _node->tagName();
 }
 
-std::string Node::getNodeValue(Poco::XML::Node *node, const std::string &name)
+std::string Node::getChildNodeValue(std::string const &name)
 {
-	Poco::XML::Node *p = node->firstChild();
+	Poco::XML::Node *p = _node->firstChild();
     while (p) {
         if (p->nodeName() == name)
             return p->firstChild()->nodeValue();
@@ -48,37 +30,24 @@ std::string Node::getNodeValue(Poco::XML::Node *node, const std::string &name)
     return std::string();
 }
 
-std::string Node::getNodeValue(std::string const &name)
-{
-    Poco::XML::Element *elem = element();
-    if (!elem)
-        return std::string();
-
-    return getNodeValue(elem, name);
-}
-
 std::string Node::getNodeAttribute(std::string const &attr)
 {
-    Poco::XML::Element *elem = element();
-    if (!elem)
-        return std::string();
-
-    return elem->getAttribute(attr);
+    return _node->getAttribute(attr);
 }
 
 std::string Node::toolTip()
 {
-    return getNodeValue("ToolTip");
+    return getChildNodeValue("ToolTip");
 }
 
 std::string Node::description()
 {
-    return getNodeValue("Description");
+    return getChildNodeValue("Description");
 }
 
 std::string Node::displayName()
 {
-    return getNodeValue("DisplayName");
+    return getChildNodeValue("DisplayName");
 }
 
 std::string Node::featureName()
@@ -88,17 +57,26 @@ std::string Node::featureName()
 
 std::string Node::visibility()
 {
-    return getNodeValue("Visibility");
+    return getChildNodeValue("Visibility");
 }
 
-void Node::getAddrLength(Poco::XML::Node *node, uint64_t &addr,
-                   uint64_t &length, std::string &endianess)
+std::shared_ptr<Node>
+Node::MakeNode(std::string const name,
+               std::weak_ptr<GenICamXMLParser> xmlParser,
+               std::weak_ptr<IPort::Interface> port)
 {
-    std::string straddr = getNodeValue(node, "Address");
-    addr = std::stoull(straddr, 0, 16);
-
-    std::string strlength = getNodeValue(node, "Length");
-    length =  std::stoull(strlength);
-
-    endianess = getNodeValue(node, "Endianess");
+    auto p = xmlParser.lock();
+    poco_assert(p);
+    Poco::XML::Element *node = p->getNodeByNameAttribute(name);
+    std::string typeName = node->tagName();
+#if 0
+    if (typeName == "Interger") {
+        return std::make_shared<IntegerNode>(name, xmlParser, port);
+    } else if (typeName == "IntReg") {
+        return std::make_shared<IntReg>(name, xmlParser, port);
+    } else if (typeName == "IntSwissKnife") {
+        return std::make_shared<IntSwissKnife>(name, xmlParser, port);
+    }
+#endif
+    return NULL;
 }

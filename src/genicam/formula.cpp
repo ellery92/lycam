@@ -25,6 +25,8 @@
 #include <stack>
 #include <cmath>
 
+#include <boost/algorithm/string.hpp>
+
 using namespace Jgv::GenICam;
 
 Formula::Formula(const std::string &formula)
@@ -219,6 +221,10 @@ Token::Object Formula::getNextToken(int fromPosition) const
         token.setType(Token::Type::TERNARY_COLON);
     }
 
+    else if (boost::iequals(_formula.substr(fromPosition, 2).c_str(), "lg")) {
+        token.setType(Token::Type::LG);
+    }
+
     // le token est un chiffre
     // on est dans le cas d'une valeur décimale ou hexa
     else if (isdigit(current)) {
@@ -226,6 +232,7 @@ Token::Object Formula::getNextToken(int fromPosition) const
         token.setType(var.find('.') != std::string::npos ?
                       Token::Type::DOUBLE : Token::Type::INT64, var);
     }
+
     // le dernier cas possible est d'avoir une variable nommée
     else {
         token = getVariable(fromPosition);
@@ -301,7 +308,7 @@ void Formula::debugOutput(const std::string &additionnalInfos) const
         rpn.append(it.getGenicamToken() + post + " ");
         tmpoutput.pop();
     }
-    lyu_debug("\n------------ Formula DEBUG ------------");
+    lyu_debug("------------ Formula DEBUG ------------");
     // lyu_debug("source : %s", qPrintable(additionnalInfos));
     auto fit = _floatVariables.begin();
     while (fit != _floatVariables.end()) {
@@ -310,13 +317,13 @@ void Formula::debugOutput(const std::string &additionnalInfos) const
     }
     auto iit = _intVariables.begin();
     while (iit != _intVariables.end()) {
-        lyu_debug("FLOAT VAR: " << iit->first << " " << iit->second);
+        lyu_debug("INT VAR: " << iit->first << " " << iit->second);
         ++iit;
     }
 
     lyu_debug("infix " << _formula);
     lyu_debug("outfix" << rpn);
-    lyu_debug("------------ END DEBUG ------------\n");
+    lyu_debug("------------ END DEBUG ------------");
 }
 
 std::vector<std::string> Formula::variablesList() const
@@ -340,7 +347,6 @@ int64_t Formula::evaluateAsInteger(const IntegerVariables &intVariables,
 {
     _intVariables = intVariables;
     _floatVariables = floatVariables;
-
 
     std::stack<Token::Object> stack;
     std::queue<Token::Object> tmpoutput(output);
@@ -513,7 +519,7 @@ double Formula::evaluateAsFloat(const IntegerVariables &intVariables,
                 (*it).setFloat(value);
             }
             else {
-                lyu_critical("Formula::evaluateAsDouble variable inconnue" << genicamToken);
+                lyu_critical("Formula::evaluateAsDouble variable inconnue " << genicamToken);
             }
 
             stack.push(*it);
@@ -619,6 +625,9 @@ double Formula::evaluateAsFloat(const IntegerVariables &intVariables,
                 break;
             case Token::Type::TERNARY_COLON:
                 shortEval.setFloat(o1);
+                break;
+            case Token::Type::LG:
+                shortEval.setFloat(log10(o1));
                 break;
             default:
                 lyu_warning("Formula::evaluateAsDouble: Token not evaluate");

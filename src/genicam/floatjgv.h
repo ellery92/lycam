@@ -1,14 +1,19 @@
 #pragma once
-#include "node.h"
+#include "reg.h"
 #include "ifloat.h"
 
 namespace Jgv {
 
 namespace GenICam {
 
-class FloatNode final : public Node, public Float::Interface
+class FloatNode : public RegNode, public Float::Interface
 {
 public:
+    FloatNode(std::string const &name,
+                std::weak_ptr<GenICamXMLParser> xmlParser,
+                std::weak_ptr<IPort::Interface> port)
+        : RegNode(name, xmlParser, port) {}
+
     virtual ~FloatNode() = default;
     virtual double getValue() override;
     virtual void setValue(double value) override;
@@ -17,9 +22,6 @@ public:
     virtual double getInc() override;
 
     Interface *interface() { return this; }
-
-private:
-    double getValue(std::string const &name, std::string const &pname);
 };
 
 } // namespace GenICam
