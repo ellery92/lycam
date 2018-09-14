@@ -14,11 +14,11 @@ public:
         : Node(name, xmlParser, port) {}
 
     virtual ~EnumerationNode() = default;
-    virtual std::string getStringValue();
-    virtual void setStringValue(const std::string &value);
-    virtual uint64_t getIntValue();
-    virtual void setIntValue(uint64_t value);
-    virtual Enumeration::Interface::EntryList  getEntries() const;
+    virtual std::string getStringValue() override;
+    virtual void setStringValue(const std::string &value) override;
+    virtual uint64_t getIntValue() override;
+    virtual void setIntValue(uint64_t value) override;
+    virtual Enumeration::Interface::EntryList  getEntries() const override;
 
     virtual Interface *interface() override {
         return this;

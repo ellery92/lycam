@@ -11,6 +11,7 @@
 #include "boolean.h"
 #include "stringreg.h"
 #include "enumeration.h"
+#include "maskedintreg.h"
 
 #include <Poco/DOM/Element.h>
 #include "logger.h"
@@ -48,6 +49,8 @@ Node::Ptr Node::create(std::string const &name,
         return create_node(EnumerationNode);
     } else if (typeName == "Command") {
         return create_node(CommandNode);
+    } else if (typeName == "MaskedIntReg") {
+        return create_node(MaskedIntNode);
     }
     lyu_error("Not supported type: " << typeName);
     return NULL;

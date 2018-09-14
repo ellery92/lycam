@@ -69,6 +69,7 @@ set(lycam_SRCS
   src/writereghelper.cpp
   src/enumentry.cpp
   src/enumeration.cpp
+  src/maskedintreg.cpp
   )
 
 list(APPEND lycam_HEADERS
@@ -117,6 +118,7 @@ list(APPEND lycam_HEADERS
   src/token.h
   src/writememhelper.h
   src/writereghelper.h
+  src/maskedintreg.h
   )
 
 
