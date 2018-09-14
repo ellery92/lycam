@@ -36,7 +36,6 @@ public:
     virtual ~Interface() = default;
 
     virtual void execute() = 0;
-    virtual bool isDone() const = 0;
 
     Type interfaceType() const override final {
         return Type::ICommand;

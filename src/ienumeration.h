@@ -23,27 +23,24 @@
 
 #include "iinterface.h"
 #include <vector>
+#include "enumentry.h"
 
 namespace Jgv {
 
 namespace GenICam {
-
-namespace Enumentry {
-class Object;
-}
 
 namespace Enumeration {
 
 class Interface : public GenICam::Interface
 {
 public:
-    typedef std::vector<Enumentry::Object *> EntryList;
+    typedef std::vector<EnumEntryNode::Ptr> EntryList;
 
     virtual ~Interface() = default;
 
     virtual std::string getStringValue() = 0;
     virtual void setStringValue(const std::string &value) = 0;
-    virtual uint64_t getIntValue() const = 0;
+    virtual uint64_t getIntValue() = 0;
     virtual void setIntValue(uint64_t value) = 0;
     virtual EntryList  getEntries() const = 0;
 

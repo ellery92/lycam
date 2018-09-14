@@ -7,6 +7,7 @@
 #include "ifloat.h"
 #include "iboolean.h"
 #include "istring.h"
+#include "ienumeration.h"
 
 #include <cassert>
 #include <iostream>
@@ -73,13 +74,24 @@ static void nodeTest(NodeMap::Ptr nodemap, std::string const &name)
         std::cout << name << ":" << strPtr->getValue() << std::endl;
         break;
     }
+    case Type::IEnumeration: {
+        Enumeration::Interface *enmPtr = dynamic_cast<Enumeration::Interface*>(iface);
+        std::cout << name << ": " << enmPtr->getStringValue();
+        Enumeration::Interface::EntryList entris = enmPtr->getEntries();
+        for (auto &p : entris) {
+            std::cout << p->getName() << ": " << p->getValue() << std::endl;
+        }
+        break;
+    }
     }
 }
 
 int main()
 {
+    std::cout << "run feature test:\n";
     GvDevice::List devList = GvDevice::list();
     for (auto &dev : devList) {
+        std::cout << dev.deviceIP() << std::endl;
         std::shared_ptr<GvcpClient> gvcpClient = std::make_shared<GvcpClient>();
         gvcpClient->controlDevice(dev.localIP(), dev.deviceIP());
 
@@ -95,6 +107,7 @@ int main()
         nodeTest(nodeMap, "SpatialFilterEnable");
         nodeTest(nodeMap, "DeviceModelName");
         nodeTest(nodeMap, "DeviceSerialNumber");
+        nodeTest(nodeMap, "AcquisitionMode");
 
         gvcpClient->releaseDevice();
     }

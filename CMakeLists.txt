@@ -7,7 +7,6 @@ if(CMAKE_BUILD_TYPE STREQUAL Debug)
   add_definitions(-D_DEBUG)
 endif()
 
-set(CMAKE_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/src)
 set(CMAKE_BINARY_DIR ${CMAKE_CURRENT_LIST_DIR}/build)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -33,11 +32,14 @@ function(add_lym_test target)
                        COMMENT "Running ${target}" VERBATIM)
 endfunction()
 
-# set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+if(WIN32)
+  set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+endif()
+
 set(LYCAM_SRCS
   src/boolean.cpp
   src/bootstrapregisters.cpp
-  # src/command.cpp
+  src/command.cpp
   src/converter.cpp
   src/discoveryhelper.cpp
   src/floatjgv.cpp
@@ -63,10 +65,14 @@ set(LYCAM_SRCS
   src/token.cpp
   src/writememhelper.cpp
   src/writereghelper.cpp
+  src/enumentry.cpp
+  src/enumeration.cpp
   )
 
 
 add_library(lycam ${LYCAM_SRCS})
+
+find_package(Boost REQUIRED)
 
 find_package(Poco REQUIRED Foundation Net XML Zip)
 target_link_libraries(lycam Poco::Foundation Poco::Net Poco::XML Poco::Zip)

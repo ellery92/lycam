@@ -6,15 +6,15 @@ namespace Jgv {
 
 namespace GenICam {
 
-class EnumerationNode final : public Node, public Enumeration::Interface
+class EnumerationNode : public Node, public Enumeration::Interface
 {
 public:
     virtual ~EnumerationNode();
-    virtual std::string getStringValue() = 0;
-    virtual void setStringValue(const std::string &value) = 0;
-    virtual uint64_t getIntValue() const = 0;
-    virtual void setIntValue(uint64_t value) = 0;
-    virtual Enumeration::Interface::EntryList  getEntries() const = 0;
+    virtual std::string getStringValue();
+    virtual void setStringValue(const std::string &value);
+    virtual uint64_t getIntValue();
+    virtual void setIntValue(uint64_t value);
+    virtual Enumeration::Interface::EntryList  getEntries() const;
 };
 
 } // namespace GenICam

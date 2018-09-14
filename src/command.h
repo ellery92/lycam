@@ -21,8 +21,7 @@ public:
     }
 
     // GenICam
-    void execute() override {};
-    bool isDone() const override { return false; };
+    void execute() override;
 };
 
 } // namespace GenICam

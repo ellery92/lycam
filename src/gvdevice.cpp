@@ -168,12 +168,11 @@ GvDevice::List GvDevice::list()
     for (auto &iface : nlist) {
         if (iface.type() == NetworkInterface::NI_TYPE_ETHERNET_CSMACD
             && iface.address().family() == AddressFamily::IPv4) {
-
             std::string locIP = iface.address().toString();
-            std::string broadIP = iface.broadcastAddress().toString();
+            lyu_debug("locIP: " << locIP);
+            std::string broadIP = "255.255.255.255";
             Packet packet;
             SocketAddress peerAddr;
-
             if (discoverDevice(locIP, broadIP, packet, peerAddr)) {
                 GvDevice dev(locIP, peerAddr.host().toString());
                 dev.impl().setData(&packet.discoveryAck);
