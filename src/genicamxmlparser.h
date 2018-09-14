@@ -22,6 +22,7 @@
 #define GENICAMXMLFILE_H
 
 #include <memory>
+#include <string>
 
 namespace Poco {
     namespace XML {

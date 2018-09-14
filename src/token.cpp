@@ -22,6 +22,7 @@
 
 #include <string>
 
+using namespace Jgv::GenICam;
 using namespace Jgv::GenICam::Token;
 
 namespace {

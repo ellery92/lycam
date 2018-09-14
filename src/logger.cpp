@@ -11,7 +11,7 @@ using namespace Poco;
 Logger &logger()
 {
     Logger &root = Logger::root();
-    if (root.getChannel() == NULL) {
+    if (!root.getChannel()) {
         // AutoPtr<Formatter> pFormatter =
         //     new PatternFormatter("%m-%d-%Y %h:%M:%S [%p] %U:%u : %t");
         AutoPtr<Formatter> pFormatter =

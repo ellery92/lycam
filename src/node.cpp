@@ -10,6 +10,7 @@
 #include "converter.h"
 #include "boolean.h"
 #include "stringreg.h"
+#include "enumeration.h"
 
 #include <Poco/DOM/Element.h>
 #include "logger.h"
@@ -43,6 +44,10 @@ Node::Ptr Node::create(std::string const &name,
         return create_node(BooleanNode);
     } else if (typeName == "StringReg") {
         return create_node(StringRegNode);
+    } else if (typeName == "Enumeration") {
+        return create_node(EnumerationNode);
+    } else if (typeName == "Command") {
+        return create_node(CommandNode);
     }
     lyu_error("Not supported type: " << typeName);
     return NULL;

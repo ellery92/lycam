@@ -108,7 +108,7 @@ int main()
         nodeTest(nodeMap, "DeviceModelName");
         nodeTest(nodeMap, "DeviceSerialNumber");
         nodeTest(nodeMap, "AcquisitionMode");
-
+        nodeTest(nodeMap, "AcquisitionMode");
         gvcpClient->releaseDevice();
     }
 
