@@ -7,6 +7,10 @@ if(CMAKE_BUILD_TYPE STREQUAL Debug)
   add_definitions(-D_DEBUG)
 endif()
 
+if(WIN32)
+  set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+endif()
+
 set(CMAKE_BINARY_DIR ${CMAKE_CURRENT_LIST_DIR}/build)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -33,10 +37,6 @@ function(add_lym_test target)
         COMMENT "Running ${target}" VERBATIM)
     endif()
 endfunction()
-
-if(WIN32)
-  set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-endif()
 
 set(lycam_SRCS
   src/boolean.cpp
@@ -122,10 +122,6 @@ list(APPEND lycam_HEADERS
   )
 
 
-add_library(${CMAKE_PROJECT_NAME} SHARED ${lycam_SRCS})
-
-target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${lycam_HEADERS})
-
 if (WIN32)
   set(BOOST_INCLUDES "" CACHE FILEPATH "Boost include path")
   if (NOT x${BOOST_INCLUDES} STREQUAL "x")
@@ -137,6 +133,14 @@ else()
 endif()
 
 find_package(Poco REQUIRED Foundation Net XML Zip)
-target_link_libraries(lycam Poco::Foundation Poco::Net Poco::XML Poco::Zip)
 
-add_lym_test(feature_test src/feature_test.cpp)
+if(WIN32)
+  add_executable(feature_test src/feature_test.cpp ${lycam_SRCS})
+  target_sources(feature_test PRIVATE ${lycam_HEADERS})
+  target_link_libraries(feature_test Poco::Foundation Poco::Net Poco::XML Poco::Zip)
+else()
+  add_library(lycam SHARED ${lycam_SRCS})
+  target_sources(lycam PRIVATE ${lycam_HEADERS})
+  target_link_libraries(lycam Poco::Foundation Poco::Net Poco::XML Poco::Zip)
+  add_lym_test(feature_test src/feature_test.cpp)
+endif()

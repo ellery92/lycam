@@ -28,6 +28,9 @@ public:
     Node(std::string const &name, GenICamXMLParser::WeakPtr xmlParser,
          IPort::Interface::WeakPtr port);
 
+    Node(Poco::XML::Element *node, GenICamXMLParser::WeakPtr xmlParser,
+         IPort::Interface::WeakPtr port);
+
     virtual ~Node() = default;
 
     virtual std::string typeString() override final;

@@ -41,7 +41,8 @@ static uint64_t getFrom32BE(const uint8_t *registerValues, uint8_t msb, uint8_t 
     const unsigned m = 31-msb;
     const unsigned l = 31-lsb;
 
-    const uint32_t val = big_to_native(*(uint32_t*)registerValues);
+    const uint32_t val = // big_to_native
+        (*(uint32_t*)registerValues);
     // on décale du LSB puis applique le masque
     uint64_t res = MASK[m-l] & (val >> l);
     return res;
@@ -93,7 +94,8 @@ static void setTo32BE(const uint8_t *registerValues, uint8_t msb, uint8_t lsb, u
     // calcul du masque
     const uint32_t mask = MASK[m-l] << l;
     // extraction du registre
-    uint32_t regVal = big_to_native(*(uint32_t*)registerValues);
+    uint32_t regVal = // big_to_native
+        (*(uint32_t*)registerValues);
     // mise à zéro des bits concernés
     regVal &= (~mask);
     // aligne la valeur du champs de bits
@@ -101,7 +103,7 @@ static void setTo32BE(const uint8_t *registerValues, uint8_t msb, uint8_t lsb, u
     // applique au registre
     regVal |= alignedValue;
     // diffuse sur le tableau
-    regVal = native_to_big(regVal);
+    // regVal = native_to_big(regVal);
     *(uint32_t*)registerValues = regVal;
 }
 
@@ -169,6 +171,9 @@ uint64_t MaskedIntNode::getValue()
     uint64_t value64 = 0;
     port->read((uint8_t *)&value64, addr, len);
 
+    lyu_debug("read from " << std::hex << addr
+              << std::dec << "(" << len << "): " << std::hex << value64);
+
     std::string endianess = getChildNodeValue(Properties::Endianess);
     uint8_t lsb, msb;
     getLSBAndMSB(lsb, msb);
@@ -211,9 +216,9 @@ void MaskedIntNode::setValue(uint64_t value)
             setTo32LE((uint8_t*)&value32, msb, lsb, (uint32_t)value);
         } else {
             setTo32BE((uint8_t*)&value32, msb, lsb, (uint32_t)value);
-            lyu_debug("write " << value32 << " to " << std::hex << addr << "(" << len << ")");
-            port->write((uint8_t *)&value32, addr, len);
         }
+        lyu_debug("write " << value32 << " to " << std::hex << addr << "(" << len << ")");
+        port->write((uint8_t *)&value32, addr, len);
     } else {
         if (endianess == Properties::LittleEndian) {
             setTo64LE((uint8_t*)&value64, msb, lsb, value);

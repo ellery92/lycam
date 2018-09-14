@@ -47,8 +47,7 @@ Enumeration::Interface::EntryList Jgv::GenICam::EnumerationNode::getEntries() co
         if (node->nodeName() == "EnumEntry") {
             Poco::XML::Element *elem = dynamic_cast<Poco::XML::Element*>(node);
             if (elem) {
-                std::string name = elem->getAttribute("Name");
-                b.push_back(std::make_shared<EnumEntryNode>(name, _xmlParser, _port));
+                b.push_back(std::make_shared<EnumEntryNode>(elem, _xmlParser, _port));
             }
         }
     }

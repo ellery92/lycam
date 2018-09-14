@@ -76,10 +76,20 @@ static void nodeTest(NodeMap::Ptr nodemap, std::string const &name)
     }
     case Type::IEnumeration: {
         Enumeration::Interface *enmPtr = dynamic_cast<Enumeration::Interface*>(iface);
-        std::cout << name << ": " << enmPtr->getStringValue();
+        std::cout << name << ": " << enmPtr->getStringValue() << ":" << enmPtr->getIntValue() << std::endl;
         Enumeration::Interface::EntryList entris = enmPtr->getEntries();
+        std::string newName;
         for (auto &p : entris) {
             std::cout << p->getName() << ": " << p->getValue() << std::endl;
+            if (p->getName() != enmPtr->getStringValue()) {
+                newName = p->getName();
+            }
+        }
+
+        if (!newName.empty()) {
+            enmPtr->setStringValue(newName);
+            std::cout << newName << " = " << enmPtr->getStringValue() << std::endl;
+            // assert(enmPtr->getStringValue() == newName);
         }
         break;
     }
@@ -107,7 +117,6 @@ int main()
         nodeTest(nodeMap, "SpatialFilterEnable");
         nodeTest(nodeMap, "DeviceModelName");
         nodeTest(nodeMap, "DeviceSerialNumber");
-        nodeTest(nodeMap, "AcquisitionMode");
         nodeTest(nodeMap, "AcquisitionMode");
         gvcpClient->releaseDevice();
     }

@@ -67,6 +67,10 @@ Node::Node(std::string const &name,
     _port = port;
 }
 
+Node::Node(Poco::XML::Element *node, GenICamXMLParser::WeakPtr xmlParser,
+     IPort::Interface::WeakPtr port)
+    : _node(node), _xmlParser(xmlParser), _port(port) {}
+
 std::string Node::typeString()
 {
     return _node->tagName();

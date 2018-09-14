@@ -15,9 +15,9 @@ class EnumEntryNode final : public Node
 public:
     using Ptr = std::shared_ptr<EnumEntryNode>;
 
-    EnumEntryNode(std::string const &name, GenICamXMLParser::WeakPtr xmlParser,
-                IPort::Interface::WeakPtr port)
-        : Node(name, xmlParser, port) {}
+    EnumEntryNode(Poco::XML::Element *node, GenICamXMLParser::WeakPtr xmlParser,
+                  IPort::Interface::WeakPtr port)
+        : Node(node, xmlParser, port) {}
 
     virtual ~EnumEntryNode() = default;
     uint64_t getValue();

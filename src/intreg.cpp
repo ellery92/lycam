@@ -17,7 +17,7 @@ uint64_t IntRegNode::getValue()
     port->read((uint8_t *)&value, addr, len);
 
     lyu_debug("read from " << std::hex << addr
-              << "(" << len << "): " << std::dec << value);
+              << std::dec << "(" << len << "): " << std::dec << value);
 
     return value;
 }

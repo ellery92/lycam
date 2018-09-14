@@ -178,7 +178,8 @@ bool GvcpClientImpl::proceed(HeaderCmdHelper &cmd, uint16_t ackType, bool resetH
         else if (HeaderAckHelper::status(buffer.headerAck)
                  != enumType(Status::SUCCESS)) {
             // la commande n'est pas passée, on quitte
-            lyu_warning("ack status failed");
+            lyu_warning("ack status failed: "
+                        << statusToString(HeaderAckHelper::status(buffer.headerAck)));
             return false;
         }
 
