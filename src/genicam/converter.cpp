@@ -1,10 +1,10 @@
 #include "converter.h"
-#include "logger.h"
 #include "swissknifehelper.h"
 #include "iinteger.h"
 #include "ifloat.h"
 #include <Poco/DOM/Node.h>
 #include <Poco/DOM/Element.h>
+#include <util/logger.h>
 
 using namespace Jgv::GenICam;
 

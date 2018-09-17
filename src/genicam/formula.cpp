@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "formula.h"
 #include "token.h"
-#include "logger.h"
+#include <util/logger.h>
 #include <cctype>
 
 #include <stack>

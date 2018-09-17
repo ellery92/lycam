@@ -1,7 +1,7 @@
 #include "nodemap.h"
 #include <Poco/DOM/Node.h>
 #include <Poco/DOM/Element.h>
-#include "logger.h"
+#include <util/logger.h>
 #include "node.h"
 
 using namespace Jgv::GenICam;

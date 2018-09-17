@@ -14,7 +14,7 @@
 #include "maskedintreg.h"
 
 #include <Poco/DOM/Element.h>
-#include "logger.h"
+#include <util/logger.h>
 
 using namespace Jgv::GenICam;
 

@@ -1,9 +1,9 @@
-#include "floatreg.h"
-#include "logger.h"
+#include "intreg.h"
+#include <util/logger.h>
 
 using namespace Jgv::GenICam;
 
-double FloatRegNode::getValue()
+uint64_t IntRegNode::getValue()
 {
     auto port = _port.lock();
     if (!port) {
@@ -11,18 +11,18 @@ double FloatRegNode::getValue()
         return 0;
     }
 
-    float value = 0;
     uint64_t addr = address();
     uint64_t len = length();
+    uint64_t value = 0;
     port->read((uint8_t *)&value, addr, len);
 
     lyu_debug("read from " << std::hex << addr
-              << "(" << len << "): " << std::dec << value);
+              << std::dec << "(" << len << "): " << std::dec << value);
 
     return value;
 }
 
-void FloatRegNode::setValue(double value)
+void IntRegNode::setValue(uint64_t value)
 {
     auto port = _port.lock();
     if (!port) {
@@ -30,9 +30,15 @@ void FloatRegNode::setValue(double value)
         return;
     }
 
-    float fval = value;
+    uint8_t *pvalue;
+    uint32_t value32 = value;
     uint64_t addr = address();
     uint64_t len = length();
+    if (len == 4) {
+        pvalue = (uint8_t*)&value32;
+    } else {
+        pvalue = (uint8_t*)&value;
+    }
     lyu_debug("write " << value << " to " << std::hex << addr << "(" << len << ")");
-    port->write((uint8_t *)&fval, addr, len);
+    port->write((uint8_t *)pvalue, addr, len);
 }

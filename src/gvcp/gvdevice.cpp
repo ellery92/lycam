@@ -5,7 +5,7 @@
 #include <Poco/Net/NetworkInterface.h>
 #include <Poco/Net/DatagramSocket.h>
 #include <Poco/RefCountedObject.h>
-#include "logger.h"
+#include <util/logger.h>
 
 using namespace Poco;
 using namespace Poco::Net;

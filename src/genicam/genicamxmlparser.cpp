@@ -28,7 +28,7 @@
 #include <Poco/DOM/Document.h>
 #include <Poco/AutoPtr.h>
 
-#include "logger.h"
+#include <util/logger.h>
 
 using namespace Jgv::GenICam;
 

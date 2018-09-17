@@ -20,7 +20,7 @@
 #include <Poco/StreamCopier.h>
 #include <Poco/RefCountedObject.h>
 
-#include "logger.h"
+#include <util/logger.h>
 
 using namespace Jgv::Gvcp;
 using namespace Poco;
@@ -99,8 +99,8 @@ private:
     std::string _controllerIP;
     std::string _deviceIP;
     uint32_t _heartbeatTimeout = 500;
-    uint32_t _timestampDateTimeout = 10000;
-    uint64_t _timestamp = 0;
+    // uint32_t _timestampDateTimeout = 10000;
+    // uint64_t _timestamp = 0;
 
     std::unique_ptr<std::thread> _timerPtr;
     std::unique_ptr<std::thread> _timestampPtr;

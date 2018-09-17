@@ -1,5 +1,5 @@
 #include "floatjgv.h"
-#include "logger.h"
+#include <util/logger.h>
 #include "floatreg.h"
 #include "swissknife.h"
 

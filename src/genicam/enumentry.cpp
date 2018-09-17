@@ -1,5 +1,5 @@
 #include "enumentry.h"
-#include "logger.h"
+#include <util/logger.h>
 #include <Poco/DOM/Element.h>
 
 using namespace Jgv::GenICam;

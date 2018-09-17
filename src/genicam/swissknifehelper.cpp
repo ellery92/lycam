@@ -2,7 +2,7 @@
 #include "integer.h"
 #include "ifloat.h"
 
-#include "logger.h"
+#include <util/logger.h>
 #include <Poco/DOM/Node.h>
 #include <Poco/DOM/Element.h>
 

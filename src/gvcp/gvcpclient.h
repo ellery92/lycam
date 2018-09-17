@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include "iport.h"
+#include <genicam/iport.h>
 
 namespace Jgv {
     namespace Gvcp {

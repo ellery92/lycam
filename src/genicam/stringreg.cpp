@@ -3,7 +3,7 @@
 #include <vector>
 #include <stack>
 
-#include "logger.h"
+#include <util/logger.h>
 
 using namespace Jgv::GenICam;
 

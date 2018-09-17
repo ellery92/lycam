@@ -1,5 +1,5 @@
 #include "intswissknife.h"
-#include "logger.h"
+#include <util/logger.h>
 #include "swissknifehelper.h"
 #include <Poco/DOM/Node.h>
 #include <Poco/DOM/Element.h>

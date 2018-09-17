@@ -1,6 +1,6 @@
 #include "maskedintreg.h"
 #include <boost/endian/conversion.hpp>
-#include "logger.h"
+#include <util/logger.h>
 
 using namespace Jgv::GenICam;
 using namespace boost::endian;
